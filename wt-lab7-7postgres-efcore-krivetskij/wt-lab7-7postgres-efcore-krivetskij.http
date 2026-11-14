@@ -1,0 +1,69 @@
+@baseUrl = http://localhost:5115
+
+### Check that the API is running
+GET {{baseUrl}}/
+
+### Get API information
+GET {{baseUrl}}/api/info
+
+### Get all patients
+GET {{baseUrl}}/api/patients
+
+### Search patients by name or diagnosis
+GET {{baseUrl}}/api/patients?search=john
+
+### Get a patient by ID
+GET {{baseUrl}}/api/patients/1
+
+### Check 404 for a missing patient
+GET {{baseUrl}}/api/patients/999
+
+### Create a patient (the API assigns the ID)
+POST {{baseUrl}}/api/patients
+Content-Type: application/json
+
+{
+  "fullName": "Alexander Miller",
+  "age": 31,
+  "doctorId": 1,
+  "appointmentDate": "2026-11-25T10:30:00",
+  "diagnosis": "Seasonal allergy",
+  "isActive": true
+}
+
+### Update a patient
+PUT {{baseUrl}}/api/patients/1
+Content-Type: application/json
+
+{
+  "fullName": "John Smith",
+  "age": 26,
+  "doctorId": 1,
+  "appointmentDate": "2026-11-26T09:00:00",
+  "diagnosis": "Seasonal influenza - follow-up",
+  "isActive": true
+}
+
+### Delete a patient
+DELETE {{baseUrl}}/api/patients/5
+
+### Get all doctors
+GET {{baseUrl}}/api/doctors
+
+### Search doctors by name or specialty
+GET {{baseUrl}}/api/doctors?search=cardio
+
+### Get a doctor by ID
+GET {{baseUrl}}/api/doctors/1
+
+### Create a doctor
+POST {{baseUrl}}/api/doctors
+Content-Type: application/json
+
+{
+  "fullName": "Dr. Robert Anderson",
+  "specialty": "Dermatologist",
+  "experienceYears": 6,
+  "office": 402,
+  "isActive": true
+}
