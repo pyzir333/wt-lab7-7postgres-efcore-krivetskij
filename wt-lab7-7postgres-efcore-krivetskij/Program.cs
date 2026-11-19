@@ -105,6 +105,36 @@ patientsApi.MapGet("", async (AppDbContext db, string? search) =>
 .WithName("GetPatients")
 .Produces<List<Patient>>(StatusCodes.Status200OK);
 
+
+patientsApi.MapPost("", async (Patient input, AppDbContext db) =>
+{
+    var validationError = ValidatePatient(input, db);
+
+    if (validationError is not null)
+    {
+        return Results.BadRequest(new { message = validationError });
+    }
+
+    var newPatient = new Patient
+    {
+        FullName = input.FullName.Trim(),
+        Age = input.Age,
+        DoctorId = input.DoctorId,
+        AppointmentDate = input.AppointmentDate,
+        Diagnosis = input.Diagnosis.Trim(),
+        IsActive = input.IsActive
+    };
+
+    db.Patients.Add(newPatient);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/api/patients/{newPatient.Id}", newPatient);
+})
+.WithName("CreatePatient")
+.Produces<Patient>(StatusCodes.Status201Created)
+.Produces(StatusCodes.Status400BadRequest);
+
+
 patientsApi.MapGet("/{id:int}", async (int id, AppDbContext db) =>
 {
     var patient = await db.Patients
